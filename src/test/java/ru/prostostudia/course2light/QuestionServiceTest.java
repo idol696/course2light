@@ -60,15 +60,15 @@ public class QuestionServiceTest {
 
     }
 
-
     @Test
+    @DisplayName("Метод remove - проверка всех типов удаления и контроль возвращаемого значения")
     void testRemoveByStringParametersSuccess() {
         Question question = new Question("Что такое Java?", "Язык программирования");
         questionService.add(question);
         Question removed = questionService.remove("Что такое Java?", "Язык программирования");
 
-        assertEquals(question, removed);
-        assertFalse(questionService.getAll().contains(question));
+        assertEquals(question, removed,"Не совпадает возвращаемое значение удаленного");
+        assertFalse(questionService.getAll().contains(question),"Удаление не было успешно проведено");
     }
 
     @Test
