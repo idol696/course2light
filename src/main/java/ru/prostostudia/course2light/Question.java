@@ -9,26 +9,28 @@ public class Question {
     private final String answer;
 
     public Question(String question, String answer) {
-        if (question.isBlank() || answer.isBlank()) throw new QuestionStringIsEmptyException();
-        else {
-            this.question = question;
-            this.answer = answer;
+        if (question.isBlank() || answer.isBlank()) {
+            throw new QuestionStringIsEmptyException();
         }
+        this.question = question;
+        this.answer = answer;
     }
 
     public String getQuestion() {
         return question;
     }
 
-     public String getAnswer() {
-        if (answer.isBlank()) throw new QuestionStringIsEmptyException();
-        else return answer;
+    public String getAnswer() {
+        if (answer.isBlank()) {
+            throw new QuestionStringIsEmptyException();
+        }
+        return answer;
     }
 
     @Override
     public String toString() {
-        return "Вопрос:" + question  +
-                "%nОтвет" + answer;
+        return "Вопрос:" + question +
+                "%nОтвет:" + answer;
     }
 
     @Override

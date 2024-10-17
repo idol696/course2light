@@ -34,11 +34,18 @@ class ExaminerServiceTest {
     @Test
     @DisplayName("Метод GetQuestion(int amount) - стандартный запрос")
     void testGetQuestions() {
-        when(questionService.getAll()).thenReturn(List.of(new Question("Тест", "Ответ")));
+        Question actualQuestion = new Question("Тест", "Ответ");
+        when(questionService.getAll()).thenReturn(List.of(actualQuestion));
+        when(questionService.getRandomQuestion()).thenReturn(actualQuestion);
 
         Collection<Question> result = examinerService.getQuestions(1);
+        Question expectedQuestion = result.stream().toList().get(0);
 
-        assertEquals(1, result.size());
+        assertEquals(1, result.size(),"Ничего не добавилось");
+        assertEquals(expectedQuestion.getQuestion(),actualQuestion.getQuestion(),"Некорректно добавлен вопрос");
+        assertEquals(expectedQuestion.getAnswer(), actualQuestion.getAnswer(),"Некорректно добавлен ответ");
+        verify(questionService, times(1)).getAll();
+
     }
 
     @Test
@@ -47,6 +54,7 @@ class ExaminerServiceTest {
         when(questionService.getAll()).thenReturn(List.of(new Question("Тест", "Ответ")));
 
         assertThrows(QuestionOverloadException.class, () -> examinerService.getQuestions(2));
+        verify(questionService, times(1)).getAll();
     }
 
     @Test
@@ -55,6 +63,7 @@ class ExaminerServiceTest {
         when(questionService.getAll()).thenReturn(Collections.emptyList());
 
         assertThrows(QuestionOverloadException.class, () -> examinerService.getQuestions(1));
+        verify(questionService, times(1)).getAll();
     }
 
     @Test
@@ -62,8 +71,6 @@ class ExaminerServiceTest {
     void testGetQuestionsZeroAmount() {
         when(questionService.getAll()).thenReturn(Collections.emptyList());
 
-        assertThrows(QuestionBadRequestException.class, () -> {
-            examinerService.getQuestions(0);
-        });
+        assertThrows(QuestionBadRequestException.class, () -> examinerService.getQuestions(0));
     }
 }

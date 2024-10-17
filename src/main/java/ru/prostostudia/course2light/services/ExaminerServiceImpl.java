@@ -22,10 +22,14 @@ public class ExaminerServiceImpl implements ExaminerService {
 
     @Override
     public Collection<Question> getQuestions(int amount) {
-        if (amount <= 0) throw new QuestionBadRequestException();
+        if (amount <= 0) {
+            throw new QuestionBadRequestException();
+        }
         Set<Question> setQuestions = new HashSet<>();
         int questionSize = questions.getAll().size();
-        if (questionSize < amount) throw new QuestionOverloadException();
+        if (questionSize < amount) {
+            throw new QuestionOverloadException();
+        }
 
         do {
             setQuestions.add(questions.getRandomQuestion());

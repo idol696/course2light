@@ -16,6 +16,7 @@ public class JavaController {
     private final QuestionService questionService;
 
     public JavaController(QuestionService questionService) {
+
         this.questionService = questionService;
     }
 
@@ -24,7 +25,7 @@ public class JavaController {
         try {
             return ResponseEntity.ok(questionService.getAll());
         } catch (QuestionBadRequestException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -33,7 +34,7 @@ public class JavaController {
         try {
             return ResponseEntity.ok(questionService.add(question,answer));
         } catch (QuestionBadRequestException | QuestionStringIsEmptyException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().build();
         }
     }
 
@@ -42,14 +43,8 @@ public class JavaController {
         try {
             return ResponseEntity.ok(questionService.remove(question,answer));
         } catch (QuestionBadRequestException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().build();
         }
-    }
-
-    @GetMapping(path = "/init")
-    public String initQuestion() {
-            questionService.demoFill();
-            return "Заполнено успешно!";
     }
 
 }

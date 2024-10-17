@@ -27,7 +27,7 @@ public class ExamController {
         try {
             return ResponseEntity.ok(examinerService.getQuestions(amount));
         } catch (QuestionBadRequestException | QuestionOverloadException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().build();
         }
     }
 
